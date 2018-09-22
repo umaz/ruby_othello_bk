@@ -44,7 +44,7 @@ class Board
     print("\n 黒:#{stone_count[0]}, 白:#{stone_count[1]}\n\n")
   end
   
-    #石をひっくり返す
+  #石をひっくり返す
   def reverse(row, col, color) #石をおいた位置
     @board[row][col] = color
     turn_direction = turnable_direction(row, col, color) #返せる方向を取得

@@ -4,10 +4,25 @@ require "./human"
 require "./com"
 
 class Game
-  def initialize()
+  def initialize(mode, order, lv)
+    case mode
+    when COM
+      case order
+      when FIRST
+        @first = Human.new(BLACK)
+        @second = Com.new(WHITE, lv)
+      when SECOND
+        @first = Com.new(BLACK, lv)
+        @second = Human.new(WHITE)
+      end
+    when HUMAN
+      @first = Human.new(BLACK)
+      @second = Human.new(WHITE)
+    when WATCH
+      @first = Com.new(BLACK, lv[0])
+      @second = Com.new(WHITE, lv[1])
+    end
     @turn = 0
-    @first = Com.new(BLACK)
-    @second = Com.new(WHITE)
     @player = @first #黒石からスタート
     @board = Board.new
     @board.show_board
@@ -23,8 +38,6 @@ class Game
       print("#{@turn+1}手目\n")
       print("#{COLOR[-@player.color]}の手番です\n")
       print("パスしました\n")
-      print("確認(何か入力してください)")
-      gets
       @board.show_board
       turn
     when MOVE
@@ -80,5 +93,3 @@ class Game
     end
   end
 end
-
-Game.new
