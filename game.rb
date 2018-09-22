@@ -1,11 +1,12 @@
 require "./constant"
 require "./board"
+require "./human"
 
 class Game
   def initialize()
     @turn = 0
-    @first = BLACK
-    @second = WHITE
+    @first = Human.new(BLACK)
+    @second = Human.new(WHITE)
     @player = @first #黒石からスタート
     @board = Board.new
     @board.show_board
@@ -19,20 +20,20 @@ class Game
       end_game
     when PASS
       print("#{@turn+1}手目\n")
-      print("#{COLOR[-@player]}の手番です\n")
+      print("#{COLOR[-@player.color]}の手番です\n")
       print("パスしました\n")
       print("確認(何か入力してください)")
       gets
       @board.show_board
       turn
     when MOVE
-      putable_cells = @board.get_putable_cells(@player)
-      print("#{COLOR[@player]}の手番です\n")
+      putable_cells = @board.get_putable_cells(@player.color)
+      print("#{COLOR[@player.color]}の手番です\n")
       print("#{@turn+1}手目:")
-      cell = gets.chomp.split("")
-      col = COL_NUM[cell[0]]
-      row = ROW_NUM[cell[1]]
-      @board.reverse(row, col, @player)
+      move = @player.put_stone(putable_cells)
+      row = move[0].to_i
+      col = move[1].to_i
+      @board.reverse(row, col, @player.color)
       @turn += 1
       @board.show_board
       change_turn
@@ -42,9 +43,9 @@ class Game
 
   #状態判定
   def status
-    if @board.get_putable_cells(@player).size == 0
+    if @board.get_putable_cells(@player.color).size == 0
       change_turn
-      if @board.get_putable_cells(@player).size == 0
+      if @board.get_putable_cells(@player.color).size == 0
         return FINISH
       else
         return PASS
