@@ -41,7 +41,150 @@ class Board
     end
     print("\n")
   end
+  
+    #石をひっくり返す
+  def reverse(row, col, color) #石をおいた位置
+    @board[row][col] = color
+    turn_direction = turnable_direction(row, col, color) #返せる方向を取得
+    if turn_direction & UPPER_LEFT != 0
+      i = 1
+      while @board[row-i][col-i] == -color #相手の色が続くまで
+        @board[row-i][col-i] = color
+        i += 1
+      end
+    end
+    if turn_direction & UPPER != 0
+      i = 1
+      while @board[row-i][col] == -color
+        @board[row-i][col] = color
+        i += 1
+      end
+    end
+    if turn_direction & UPPER_RIGHT != 0
+      i = 1
+      while @board[row-i][col+i] == -color
+        @board[row-i][col+i] = color
+        i += 1
+      end
+    end
+    if turn_direction & RIGHT != 0
+      i = 1
+      while @board[row][col+i] == -color
+        @board[row][col+i] = color
+        i += 1
+      end
+    end
+    if turn_direction & LOWER_RIGHT != 0
+      i = 1
+      while @board[row+i][col+i] == -color
+        @board[row+i][col+i] = color
+        i += 1
+      end
+    end
+    if turn_direction & LOWER != 0
+      i = 1
+      while @board[row+i][col] == -color
+        @board[row+i][col] = color
+        i += 1
+      end
+    end
+    if turn_direction & LOWER_LEFT != 0
+      i = 1
+      while @board[row+i][col-i] == -color
+        @board[row+i][col-i] = color
+        i += 1
+      end
+    end
+    if turn_direction & LEFT != 0
+      i = 1
+      while @board[row][col-i] == -color
+        @board[row][col-i] = color
+        i += 1
+      end
+    end
+  end
+
+  #ひっくり返せる方向の取得
+  def turnable_direction(row, col, color)
+    direction = NONE
+    #左上
+    if @board[row-1][col-1] == -color #相手の色がある場合
+      i = 2
+      while @board[row-i][col-i] == -color #相手の色が続くまで
+        i += 1
+      end
+      if @board[row-i][col-i] == color #相手の色に続くのが自分の色の場合
+        direction |= UPPER_LEFT
+      end
+    end
+    if @board[row-1][col] == -color #上
+      i = 2
+      while @board[row-i][col] == -color
+        i += 1
+      end
+      if @board[row-i][col] == color
+        direction |= UPPER
+      end
+    end
+    if @board[row-1][col+1] == -color #右上
+      i = 2
+      while @board[row-i][col+i] == -color
+        i += 1
+      end
+      if @board[row-i][col+i] == color
+        direction |= UPPER_RIGHT
+      end
+    end
+    if @board[row][col+1] == -color #右
+      i = 2
+      while @board[row][col+i] == -color
+        i += 1
+      end
+      if @board[row][col+i] == color
+        direction |= RIGHT
+      end
+    end
+    if @board[row+1][col+1] == -color #右下
+      i = 2
+      while @board[row+i][col+i] == -color
+        i += 1
+      end
+      if @board[row+i][col+i] == color
+        direction |= LOWER_RIGHT
+      end
+    end
+    if @board[row+1][col] == -color #下
+      i = 2
+      while @board[row+i][col] == -color
+        i += 1
+      end
+      if @board[row+i][col] == color
+        direction |= LOWER
+      end
+    end
+    if @board[row+1][col-1] == -color #左下
+      i = 2
+      while @board[row+i][col-i] == -color
+        i += 1
+      end
+      if @board[row+i][col-i] == color
+        direction |= LOWER_LEFT
+      end
+    end
+    if @board[row][col-1] == -color #左
+      i = 2
+      while @board[row][col-i] == -color
+        i += 1
+      end
+      if @board[row][col-i] == color
+        direction |= LEFT
+      end
+    end
+    return direction
+  end
 end
 
+
 board = Board.new
+board.reverse(3, 4, BLACK)
 board.show_board
