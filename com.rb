@@ -7,12 +7,12 @@ class Com < Player
     @lv = lv
   end
 
-  def put_stone(putable_cells)
+  def put_stone(game, board)
     case @lv
     when 1
-      cell = lv1(putable_cells)
+      cell = lv1(game, board)
     when 2
-      cell = lv2(putable_cells)
+      cell = lv2(game, board)
     end
     row = ROW_NUM.key(cell[0])
     col = COL_NUM.key(cell[1])
@@ -21,14 +21,16 @@ class Com < Player
     return cell
   end
 
-  def lv1(putable_cells)
+  def lv1(game, board)
+    putable_cells = board.get_putable_cells(game.player.color)
     return putable_cells.sample #空きますからランダムに1つ取得
   end
 
   #BOARD_SCOREのもっとも大きくなるマスに石を打つ
-  def lv2(putable_cells)
+  def lv2(game, board)
     score = -9999
     put_cell = []
+    putable_cells = board.get_putable_cells(game.player.color)
     putable_cells.each do |cell|
       if BOARD_SCORE[cell[0]][cell[1]] > score
         put_cell = cell

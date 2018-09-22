@@ -23,14 +23,19 @@ class Game
       @second = Com.new(WHITE, lv[1])
     end
     @turn = 0
+    @record = Hash.new
     @player = @first #黒石からスタート
     @board = Board.new
     @board.show_board
-    turn
+    phase
   end
 
+  attr_reader :player
+  attr_reader :turn
+  attr_reader :record
+
   #手番の流れ
-  def turn
+  def phase
     case status
     when FINISH
       end_game
@@ -39,26 +44,32 @@ class Game
       print("#{COLOR[-@player.color]}の手番です\n")
       print("パスしました\n")
       @board.show_board
-      turn
+      phase
     when MOVE
       putable_cells = @board.get_putable_cells(@player.color)
       print("#{COLOR[@player.color]}の手番です\n")
       print("#{@turn+1}手目:")
-      move = @player.put_stone(putable_cells)
+      case @player
+      when Human
+        move = @player.put_stone(putable_cells)
+      when Com
+        move = @player.put_stone(self, @board)
+      end
       row = move[0].to_i
       col = move[1].to_i
-      @board.reverse(row, col, @player.color)
+      change = @board.reverse(row, col, @player.color)
+      @record[@turn] = [move, @player, change]
       @turn += 1
       @board.show_board
-      change_turn
-      turn
+      change_phase
+      phase
     end
   end
 
   #状態判定
   def status
     if @board.get_putable_cells(@player.color).size == 0
-      change_turn
+      change_phase
       if @board.get_putable_cells(@player.color).size == 0
         return FINISH
       else
@@ -69,7 +80,7 @@ class Game
     end
   end
 
-  def change_turn
+  def change_phase
     if @player == @first
       @player = @second
     else
