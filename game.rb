@@ -1,12 +1,13 @@
 require "./constant"
 require "./board"
 require "./human"
+require "./com"
 
 class Game
   def initialize()
     @turn = 0
-    @first = Human.new(BLACK)
-    @second = Human.new(WHITE)
+    @first = Com.new(BLACK)
+    @second = Com.new(WHITE)
     @player = @first #黒石からスタート
     @board = Board.new
     @board.show_board
