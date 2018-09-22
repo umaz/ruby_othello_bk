@@ -219,8 +219,3 @@ class Board
     return count
   end
 end
-
-
-board = Board.new
-board.reverse(3, 4, BLACK)
-board.show_board
