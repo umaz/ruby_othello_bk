@@ -182,9 +182,25 @@ class Board
     end
     return direction
   end
+
+  #ひっくり返せるマスの一覧を取得
+  def get_putable_cells(color)
+    putable_cells = []
+    @board.each_with_index do |row, i|
+      row.each_with_index do |col, j|
+        if col == EMPTY #空きマス
+          turnable_direction = turnable_direction(i, j, color)
+          if turnable_direction != NONE #ひっくり返せる方向が存在する=石を置けるマス
+            putable_cells.push([i,j]) #座標を格納
+          end
+        end
+      end
+    end
+    return putable_cells
+  end
 end
 
 
 board = Board.new
-board.reverse(3, 4, BLACK)
+board.get_putable_cells(BLACK)
 board.show_board
