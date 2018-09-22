@@ -202,5 +202,5 @@ end
 
 
 board = Board.new
-board.get_putable_cells(BLACK)
 board.show_board
+p board.get_putable_cells(BLACK)
