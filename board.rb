@@ -40,6 +40,8 @@ class Board
       print("\n")
     end
     print("\n")
+    stone_count = count
+    print("\n 黒:#{stone_count[0]}, 白:#{stone_count[1]}\n\n")
   end
   
     #石をひっくり返す
@@ -198,9 +200,27 @@ class Board
     end
     return putable_cells
   end
+
+  #石の数のカウント
+  def count
+    black = 0
+    white = 0
+    @board.each do |row|
+      row.each do |col|
+        case col
+        when BLACK
+          black += 1
+        when WHITE
+          white += 1
+        end
+      end
+    end
+    count = [black, white]
+    return count
+  end
 end
 
 
 board = Board.new
+board.reverse(3, 4, BLACK)
 board.show_board
-p board.get_putable_cells(BLACK)
