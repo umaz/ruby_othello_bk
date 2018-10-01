@@ -55,13 +55,8 @@ class Game
       when Com
         move = @player.put_stone(self, @board)
       end
-      row = move[0].to_i
-      col = move[1].to_i
-      change = @board.reverse(row, col, @player.color)
-      @record[@turn] = [move, @player, change]
-      @turn += 1
+      reverse(move)
       @board.show_board
-      change_phase
       phase
     end
   end
@@ -77,6 +72,25 @@ class Game
       end
     else
       return MOVE
+    end
+  end
+
+  def reverse(move)
+    row = move[0].to_i
+    col = move[1].to_i
+    change = @board.reverse(row, col, @player.color)
+    @record[@turn] = [move, @player, change]
+    @turn += 1
+    change_phase
+  end
+  
+  def undo
+    if @turn != 0 #1ターン目でない時
+      @turn -= 1
+      cell = @record[@turn][0]
+      @player = @record[@turn][1]
+      change = @record[@turn][2]
+      @board.undo(cell, @player.color, change)
     end
   end
 

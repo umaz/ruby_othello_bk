@@ -34,6 +34,10 @@ EXIT = 4
 FIRST = 1
 SECOND = 2
 
+#search_type
+BOARD = 1
+PERFECT = 2
+
 #スコア
 BOARD_SCORE = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
