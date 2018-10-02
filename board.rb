@@ -48,7 +48,7 @@ class Board
   def reverse(row, col, color) #石をおいた位置
     @board[row][col] = color
     turn_direction = turnable_direction(row, col, color) #返せる方向を取得
-    turned_cells = [] #返す方向と返した枚数
+    turned_cells = [] #返したマス
     if turn_direction & UPPER_LEFT != 0
       i = 1
       while @board[row-i][col-i] == -color #相手の色が続くまで
