@@ -22,9 +22,9 @@ class Board
 
   #現在の盤の状態を表示
   def show_board
-    print("\n\n  #{COL_NUM.keys.join(" ")}\n") #列
-    @board.slice(1...-1).each_with_index do |row, i| #番兵を除く
-      print(ROW_NUM[(i+1).to_s])
+    print("\n\n  #{COL_NUM.keys.join(" ")}") #列
+    @board.each_with_index do |row, i| #番兵を除く
+      print(ROW_NUM[(i).to_s])
       row.each do |col|
         case col
         when EMPTY
